@@ -96,7 +96,8 @@ public class nuklidTransferTime extends javax.swing.JFrame {
 
         menuBarFile.setText("File");
 
-        menuBarFileItemBrowsefile.setText("Select textfile");
+        menuBarFileItemBrowsefile.setText("Select log file");
+        menuBarFileItemBrowsefile.setActionCommand("Select log file");
         menuBarFileItemBrowsefile.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 menuBarFileItemBrowsefileActionPerformed(evt);
@@ -173,7 +174,7 @@ public class nuklidTransferTime extends javax.swing.JFrame {
             fileWriter.flush();
             JOptionPane.showMessageDialog(null, "Transfer time is stored in "+path, "Transfer time stored", JOptionPane.INFORMATION_MESSAGE);
         } catch (FileNotFoundException e) {
-            JOptionPane.showMessageDialog(null, path+" not found!\n\nPlease select a textfile in File menu", "File not found", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, path+" not found!\n\nPlease select a log file in the File menu", "File not found", JOptionPane.ERROR_MESSAGE);
         } catch (IOException ex) {
             Logger.getLogger(nuklidTransferTime.class.getName()).log(Level.SEVERE, null, ex);
         }

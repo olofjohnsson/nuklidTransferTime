@@ -15,7 +15,8 @@
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="menuBarFileItemBrowsefile">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Select textfile"/>
+                <Property name="text" type="java.lang.String" value="Select log file"/>
+                <Property name="actionCommand" type="java.lang.String" value="Select log file"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuBarFileItemBrowsefileActionPerformed"/>
