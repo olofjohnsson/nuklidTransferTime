@@ -160,6 +160,7 @@ public class nuklidTransferTime extends javax.swing.JFrame {
         SimpleAttributeSet center = new SimpleAttributeSet();
         StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
         doc.setParagraphAttributes(0, doc.getLength(), center, false);
+        if(elapsedTime>0){
         String result;
         result = String.format("%.1f",elapsedTime);
         textPaneElapsedTime.setText(result+"s");
@@ -176,9 +177,9 @@ public class nuklidTransferTime extends javax.swing.JFrame {
         } catch (IOException ex) {
             Logger.getLogger(nuklidTransferTime.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-
-
+        }
+        else
+            textPaneElapsedTime.setText("");
     }//GEN-LAST:event_stopButtonMousePressed
 
     private void menuBarFileItemBrowsefileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuBarFileItemBrowsefileActionPerformed
