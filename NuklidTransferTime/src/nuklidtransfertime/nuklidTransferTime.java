@@ -7,10 +7,21 @@ package nuklidtransfertime;
 
 import java.awt.BorderLayout;
 import java.awt.ComponentOrientation;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.text.DecimalFormat;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFileChooser;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
+
+
 
 /**
  *
@@ -19,11 +30,15 @@ import javax.swing.text.StyledDocument;
 public class nuklidTransferTime extends javax.swing.JFrame {
     stopWatch stopwatch = new stopWatch();
     private double elapsedTime;
+    private Object textarea;
+    public File file;
+    public String path = "\\\\vgregion.se\\Hem\\SU-008\\olojo5\\Mina dokument\\temp.txt";//default path for file if no other is chosen
     /**
      * Creates new form nuklidTransferTime
      */
     public nuklidTransferTime() {
         initComponents();
+
     }
 
     /**
@@ -35,18 +50,23 @@ public class nuklidTransferTime extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        buttonGroup1 = new javax.swing.ButtonGroup();
+        buttonGroupStartStop = new javax.swing.ButtonGroup();
+        fileBrowser = new javax.swing.JFileChooser();
         startButton = new javax.swing.JToggleButton();
         stopButton = new javax.swing.JToggleButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         textPaneElapsedTime = new javax.swing.JTextPane();
+        menuBar = new javax.swing.JMenuBar();
+        menuBarFile = new javax.swing.JMenu();
+        menuBarFileItemBrowsefile = new javax.swing.JMenuItem();
+        menuBarFileAbout = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Nuklid transfer time");
-        setAlwaysOnTop(true);
+        setBackground(new java.awt.Color(51, 255, 51));
         setResizable(false);
 
-        buttonGroup1.add(startButton);
+        buttonGroupStartStop.add(startButton);
         startButton.setText("Start");
         startButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
@@ -54,7 +74,7 @@ public class nuklidTransferTime extends javax.swing.JFrame {
             }
         });
 
-        buttonGroup1.add(stopButton);
+        buttonGroupStartStop.add(stopButton);
         stopButton.setText("Stop");
         stopButton.setMaximumSize(new java.awt.Dimension(57, 23));
         stopButton.setMinimumSize(new java.awt.Dimension(57, 23));
@@ -70,6 +90,28 @@ public class nuklidTransferTime extends javax.swing.JFrame {
         textPaneElapsedTime.setToolTipText("");
         textPaneElapsedTime.setCursor(new java.awt.Cursor(java.awt.Cursor.WAIT_CURSOR));
         jScrollPane2.setViewportView(textPaneElapsedTime);
+
+        menuBarFile.setText("File");
+
+        menuBarFileItemBrowsefile.setText("Choose logfile");
+        menuBarFileItemBrowsefile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuBarFileItemBrowsefileActionPerformed(evt);
+            }
+        });
+        menuBarFile.add(menuBarFileItemBrowsefile);
+
+        menuBarFileAbout.setText("About");
+        menuBarFileAbout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuBarFileAboutActionPerformed(evt);
+            }
+        });
+        menuBarFile.add(menuBarFileAbout);
+
+        menuBar.add(menuBarFile);
+
+        setJMenuBar(menuBar);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -117,8 +159,42 @@ public class nuklidTransferTime extends javax.swing.JFrame {
         String result;
         result = String.format("%.1f",elapsedTime);
         textPaneElapsedTime.setText(result+"s");
-        //System.out.println("Stopbutton...");
+
+        System.out.println(path);
+            FileWriter fileWriter;
+        try {
+            fileWriter = new FileWriter(path, true);
+            Date date = new Date();
+            fileWriter.write(date.toString()+";"+result+";s\n");
+            fileWriter.flush();
+        } catch (IOException ex) {
+            Logger.getLogger(nuklidTransferTime.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+
+
     }//GEN-LAST:event_stopButtonMousePressed
+
+    private void menuBarFileItemBrowsefileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuBarFileItemBrowsefileActionPerformed
+        int returnVal = fileBrowser.showOpenDialog(this);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            File fileLocal = fileBrowser.getSelectedFile();
+            file = fileLocal;
+            path = file.toString();
+            /*try {
+                // What to do with the file, e.g. display it in a TextArea
+                textarea.read( new FileReader( file.getAbsolutePath() ), null );
+            } catch (IOException ex) {
+                System.out.println("problem accessing file"+file.getAbsolutePath());
+            }*/
+        } else {
+            System.out.println("File access cancelled by user.");
+        }        // TODO add your handling code here:
+    }//GEN-LAST:event_menuBarFileItemBrowsefileActionPerformed
+
+    private void menuBarFileAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuBarFileAboutActionPerformed
+        new About(this).setVisible(true);
+    }//GEN-LAST:event_menuBarFileAboutActionPerformed
 
     /**
      * @param args the command line arguments
@@ -156,11 +232,18 @@ public class nuklidTransferTime extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.ButtonGroup buttonGroupStartStop;
+    private javax.swing.JFileChooser fileBrowser;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JMenuBar menuBar;
+    private javax.swing.JMenu menuBarFile;
+    private javax.swing.JMenuItem menuBarFileAbout;
+    private javax.swing.JMenuItem menuBarFileItemBrowsefile;
     private javax.swing.JToggleButton startButton;
     private javax.swing.JToggleButton stopButton;
     private javax.swing.JTextPane textPaneElapsedTime;
     // End of variables declaration//GEN-END:variables
     DecimalFormat numberFormat = new DecimalFormat("#.00");
+
+
 }
