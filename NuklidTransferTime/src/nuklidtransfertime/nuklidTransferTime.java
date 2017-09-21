@@ -43,7 +43,7 @@ public class nuklidTransferTime extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Nuklid transfer time");
-        setAlwaysOnTop(true);
+        setBackground(new java.awt.Color(51, 255, 51));
         setResizable(false);
 
         buttonGroup1.add(startButton);
