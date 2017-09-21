@@ -9,6 +9,7 @@ import java.awt.BorderLayout;
 import java.awt.ComponentOrientation;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -17,6 +18,7 @@ import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
@@ -32,7 +34,8 @@ public class nuklidTransferTime extends javax.swing.JFrame {
     private double elapsedTime;
     private Object textarea;
     public File file;
-    public String path = "\\\\vgregion.se\\Hem\\SU-008\\olojo5\\Mina dokument\\temp.txt";//default path for file if no other is chosen
+    public String path = "C:\\temp\\";
+    //public String path = "\\\\vgregion.se\\Hem\\SU-008\\olojo5\\Mina dokument\\temp.txt";//default path for file if no other is chosen
     /**
      * Creates new form nuklidTransferTime
      */
@@ -93,7 +96,7 @@ public class nuklidTransferTime extends javax.swing.JFrame {
 
         menuBarFile.setText("File");
 
-        menuBarFileItemBrowsefile.setText("Choose logfile");
+        menuBarFileItemBrowsefile.setText("Select textfile");
         menuBarFileItemBrowsefile.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 menuBarFileItemBrowsefileActionPerformed(evt);
@@ -142,10 +145,11 @@ public class nuklidTransferTime extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void startButtonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_startButtonMousePressed
-        textPaneElapsedTime.setText("Räknar");
+        textPaneElapsedTime.setText("Counting");
         stopwatch.start();
         //System.out.println("Startbutton...");
     }//GEN-LAST:event_startButtonMousePressed
@@ -160,13 +164,15 @@ public class nuklidTransferTime extends javax.swing.JFrame {
         result = String.format("%.1f",elapsedTime);
         textPaneElapsedTime.setText(result+"s");
 
-        System.out.println(path);
-            FileWriter fileWriter;
+        FileWriter fileWriter;
         try {
             fileWriter = new FileWriter(path, true);
             Date date = new Date();
             fileWriter.write(date.toString()+";"+result+";s\n");
             fileWriter.flush();
+            JOptionPane.showMessageDialog(null, "Transfer time is stored in "+path, "Transfer time stored", JOptionPane.INFORMATION_MESSAGE);
+        } catch (FileNotFoundException e) {
+            JOptionPane.showMessageDialog(null, path+" not found!\n\nPlease select a textfile in File menu", "File not found", JOptionPane.ERROR_MESSAGE);
         } catch (IOException ex) {
             Logger.getLogger(nuklidTransferTime.class.getName()).log(Level.SEVERE, null, ex);
         }

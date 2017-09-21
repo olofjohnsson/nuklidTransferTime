@@ -80,7 +80,7 @@ public class About extends JDialog {
         copyrightTextArea.setEditable(false);
         copyrightTextArea.setLineWrap(true);
         copyrightTextArea.setRows(8);
-        copyrightTextArea.setText("Nuklid transfer time\n\nDeveloper\nOlof Johnsson");
+        copyrightTextArea.setText("Nuklid transfer time\n\nDeveloper\nOlof Johnsson\nolof.johnsson@vgregion.se");
         copyrightTextArea.setWrapStyleWord(true);
         copyrightTextArea.setBorder(null);
         copyrightTextArea.setFocusable(false);
