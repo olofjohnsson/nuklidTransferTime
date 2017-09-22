@@ -172,7 +172,7 @@ public class nuklidTransferTime extends javax.swing.JFrame {
             Date date = new Date();
             fileWriter.write(date.toString()+";"+result+";s\n");
             fileWriter.flush();
-            JOptionPane.showMessageDialog(null, "Transfer time is stored in "+path, "Transfer time stored", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Transfer time is stored in "+path, "Transfer time stored successfully!", JOptionPane.INFORMATION_MESSAGE);
         } catch (FileNotFoundException e) {
             JOptionPane.showMessageDialog(null,"Please select a log file in the File menu", "File not found", JOptionPane.ERROR_MESSAGE);
         } catch (IOException ex) {
