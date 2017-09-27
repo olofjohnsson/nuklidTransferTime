@@ -18,6 +18,7 @@ import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
@@ -34,7 +35,7 @@ public class nuklidTransferTime extends javax.swing.JFrame {
     private double elapsedTime;
     private Object textarea;
     public File file;
-    public String path = "C:\\temp\\";
+    public String path = "C:\\Users\\Acer\\Documents\\temp.txt";
     //public String path = "\\\\vgregion.se\\Hem\\SU-008\\olojo5\\Mina dokument\\temp.txt";//default path for file if no other is chosen
     /**
      * Creates new form nuklidTransferTime
@@ -59,6 +60,7 @@ public class nuklidTransferTime extends javax.swing.JFrame {
         stopButton = new javax.swing.JToggleButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         textPaneElapsedTime = new javax.swing.JTextPane();
+        labelInfo = new javax.swing.JLabel();
         menuBar = new javax.swing.JMenuBar();
         menuBarFile = new javax.swing.JMenu();
         menuBarFileItemBrowsefile = new javax.swing.JMenuItem();
@@ -97,7 +99,6 @@ public class nuklidTransferTime extends javax.swing.JFrame {
         menuBarFile.setText("File");
 
         menuBarFileItemBrowsefile.setText("Select log file");
-        menuBarFileItemBrowsefile.setActionCommand("Select log file");
         menuBarFileItemBrowsefile.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 menuBarFileItemBrowsefileActionPerformed(evt);
@@ -123,11 +124,14 @@ public class nuklidTransferTime extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(startButton, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(stopButton, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(labelInfo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(startButton, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(stopButton, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -140,8 +144,10 @@ public class nuklidTransferTime extends javax.swing.JFrame {
                             .addComponent(startButton, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(stopButton, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(27, 27, 27)
+                        .addGap(29, 29, 29)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(labelInfo, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -152,6 +158,7 @@ public class nuklidTransferTime extends javax.swing.JFrame {
     private void startButtonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_startButtonMousePressed
         textPaneElapsedTime.setText("Counting");
         stopwatch.start();
+        labelInfo.setText("");
         //System.out.println("Startbutton...");
     }//GEN-LAST:event_startButtonMousePressed
 
@@ -172,7 +179,8 @@ public class nuklidTransferTime extends javax.swing.JFrame {
             Date date = new Date();
             fileWriter.write(date.toString()+";"+result+";s\n");
             fileWriter.flush();
-            JOptionPane.showMessageDialog(null, "Transfer time is stored in "+path, "Transfer time stored successfully!", JOptionPane.INFORMATION_MESSAGE);
+            //labelInfo.setHorizontalAlignment(JLabel.CENTER);
+            labelInfo.setText("<html>Transfer time is successfully stored in:<br><i>"+path+"</i></html>");
         } catch (FileNotFoundException e) {
             JOptionPane.showMessageDialog(null,"Please select a log file in the File menu", "File not found", JOptionPane.ERROR_MESSAGE);
         } catch (IOException ex) {
@@ -243,6 +251,7 @@ public class nuklidTransferTime extends javax.swing.JFrame {
     private javax.swing.ButtonGroup buttonGroupStartStop;
     private javax.swing.JFileChooser fileBrowser;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JLabel labelInfo;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenu menuBarFile;
     private javax.swing.JMenuItem menuBarFileAbout;
