@@ -36,6 +36,9 @@ public class nuklidTransferTime extends javax.swing.JFrame {
     private Object textarea;
     public File file;
     public String path = "C:\\Users\\Acer\\Documents\\temp.txt";
+    public String target = "";
+    public String row;
+    public String formattedTime;
     //public String path = "\\\\vgregion.se\\Hem\\SU-008\\olojo5\\Mina dokument\\temp.txt";//default path for file if no other is chosen
     /**
      * Creates new form nuklidTransferTime
@@ -56,11 +59,15 @@ public class nuklidTransferTime extends javax.swing.JFrame {
 
         buttonGroupStartStop = new javax.swing.ButtonGroup();
         fileBrowser = new javax.swing.JFileChooser();
+        buttonGroupCheckBox = new javax.swing.ButtonGroup();
         startButton = new javax.swing.JToggleButton();
         stopButton = new javax.swing.JToggleButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         textPaneElapsedTime = new javax.swing.JTextPane();
         labelInfo = new javax.swing.JLabel();
+        jCheckBoxT1 = new javax.swing.JCheckBox();
+        jCheckBoxT2 = new javax.swing.JCheckBox();
+        jCheckBoxT4 = new javax.swing.JCheckBox();
         menuBar = new javax.swing.JMenuBar();
         menuBarFile = new javax.swing.JMenu();
         menuBarFileItemBrowsefile = new javax.swing.JMenuItem();
@@ -95,6 +102,30 @@ public class nuklidTransferTime extends javax.swing.JFrame {
         textPaneElapsedTime.setToolTipText("");
         textPaneElapsedTime.setCursor(new java.awt.Cursor(java.awt.Cursor.WAIT_CURSOR));
         jScrollPane2.setViewportView(textPaneElapsedTime);
+
+        buttonGroupCheckBox.add(jCheckBoxT1);
+        jCheckBoxT1.setText("T1 F18");
+        jCheckBoxT1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBoxT1ActionPerformed(evt);
+            }
+        });
+
+        buttonGroupCheckBox.add(jCheckBoxT2);
+        jCheckBoxT2.setText("T2 N13");
+        jCheckBoxT2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBoxT2ActionPerformed(evt);
+            }
+        });
+
+        buttonGroupCheckBox.add(jCheckBoxT4);
+        jCheckBoxT4.setText("T4 F18");
+        jCheckBoxT4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBoxT4ActionPerformed(evt);
+            }
+        });
 
         menuBarFile.setText("File");
 
@@ -131,7 +162,13 @@ public class nuklidTransferTime extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(stopButton, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(stopButton, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jCheckBoxT4)
+                            .addComponent(jCheckBoxT2)
+                            .addComponent(jCheckBoxT1))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -146,9 +183,15 @@ public class nuklidTransferTime extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(29, 29, 29)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jCheckBoxT1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jCheckBoxT2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jCheckBoxT4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
                 .addComponent(labelInfo, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
@@ -169,17 +212,15 @@ public class nuklidTransferTime extends javax.swing.JFrame {
         StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
         doc.setParagraphAttributes(0, doc.getLength(), center, false);
         if(elapsedTime>0){
-        String result;
-        result = String.format("%.1f",elapsedTime);
-        textPaneElapsedTime.setText(result+"s");
-
+        formattedTime = String.format("%.1f",elapsedTime);
+        textPaneElapsedTime.setText(formattedTime+"s");
         FileWriter fileWriter;
         try {
             fileWriter = new FileWriter(path, true);
             Date date = new Date();
-            fileWriter.write(date.toString()+";"+result+";s\n");
+            row = (target+";"+date.toString()+";"+formattedTime+"\n");
+            fileWriter.write(target+";"+date.toString()+";"+formattedTime+"\n");
             fileWriter.flush();
-            //labelInfo.setHorizontalAlignment(JLabel.CENTER);
             labelInfo.setText("<html>Transfer time is successfully stored in:<br><i>"+path+"</i></html>");
         } catch (FileNotFoundException e) {
             JOptionPane.showMessageDialog(null,"Please select a log file in the File menu", "File not found", JOptionPane.ERROR_MESSAGE);
@@ -197,12 +238,6 @@ public class nuklidTransferTime extends javax.swing.JFrame {
             File fileLocal = fileBrowser.getSelectedFile();
             file = fileLocal;
             path = file.toString();
-            /*try {
-                // What to do with the file, e.g. display it in a TextArea
-                textarea.read( new FileReader( file.getAbsolutePath() ), null );
-            } catch (IOException ex) {
-                System.out.println("problem accessing file"+file.getAbsolutePath());
-            }*/
         } else {
             System.out.println("File access cancelled by user.");
         }        // TODO add your handling code here:
@@ -211,6 +246,18 @@ public class nuklidTransferTime extends javax.swing.JFrame {
     private void menuBarFileAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuBarFileAboutActionPerformed
         new About(this).setVisible(true);
     }//GEN-LAST:event_menuBarFileAboutActionPerformed
+
+    private void jCheckBoxT1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxT1ActionPerformed
+        target = "T1";
+    }//GEN-LAST:event_jCheckBoxT1ActionPerformed
+
+    private void jCheckBoxT2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxT2ActionPerformed
+        target = "T2";
+    }//GEN-LAST:event_jCheckBoxT2ActionPerformed
+
+    private void jCheckBoxT4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxT4ActionPerformed
+        target = "T4";
+    }//GEN-LAST:event_jCheckBoxT4ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -248,8 +295,12 @@ public class nuklidTransferTime extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.ButtonGroup buttonGroupCheckBox;
     private javax.swing.ButtonGroup buttonGroupStartStop;
     private javax.swing.JFileChooser fileBrowser;
+    private javax.swing.JCheckBox jCheckBoxT1;
+    private javax.swing.JCheckBox jCheckBoxT2;
+    private javax.swing.JCheckBox jCheckBoxT4;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel labelInfo;
     private javax.swing.JMenuBar menuBar;
