@@ -35,11 +35,11 @@ public class nuklidTransferTime extends javax.swing.JFrame {
     private double elapsedTime;
     private Object textarea;
     public File file;
-    public String path = "C:\\Users\\Acer\\Documents\\temp.txt";
     public String target = "";
     public String row;
     public String formattedTime;
     //public String path = "\\\\vgregion.se\\Hem\\SU-008\\olojo5\\Mina dokument\\temp.txt";//default path for file if no other is chosen
+    public String path = "G:\\\\SU.Omr4.MFT.Radiofarmakacentralen\\\\Utrustning\\\\PETtrace 880\\\\Ledningar\\\\Transfertid\\\\transferTime.txt";//default path for file if no other is chosen
     /**
      * Creates new form nuklidTransferTime
      */
@@ -68,6 +68,8 @@ public class nuklidTransferTime extends javax.swing.JFrame {
         jCheckBoxT1 = new javax.swing.JCheckBox();
         jCheckBoxT2 = new javax.swing.JCheckBox();
         jCheckBoxT4 = new javax.swing.JCheckBox();
+        jCheckBoxEmpty = new javax.swing.JCheckBox();
+        jLabel1 = new javax.swing.JLabel();
         menuBar = new javax.swing.JMenuBar();
         menuBarFile = new javax.swing.JMenu();
         menuBarFileItemBrowsefile = new javax.swing.JMenuItem();
@@ -127,6 +129,16 @@ public class nuklidTransferTime extends javax.swing.JFrame {
             }
         });
 
+        buttonGroupCheckBox.add(jCheckBoxEmpty);
+        jCheckBoxEmpty.setText("N/A");
+        jCheckBoxEmpty.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBoxEmptyActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setText("Target:");
+
         menuBarFile.setText("File");
 
         menuBarFileItemBrowsefile.setText("Select log file");
@@ -153,21 +165,27 @@ public class nuklidTransferTime extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(labelInfo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(startButton, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
                         .addComponent(stopButton, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jCheckBoxT4)
-                            .addComponent(jCheckBoxT2)
-                            .addComponent(jCheckBoxT1))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jCheckBoxT1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jCheckBoxT2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jCheckBoxT4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jCheckBoxEmpty)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -184,13 +202,14 @@ public class nuklidTransferTime extends javax.swing.JFrame {
                         .addGap(29, 29, 29)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jCheckBoxT1)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(jCheckBoxT1)
+                    .addComponent(jCheckBoxT2)
+                    .addComponent(jCheckBoxT4)
+                    .addComponent(jCheckBoxEmpty))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jCheckBoxT2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jCheckBoxT4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
-                .addComponent(labelInfo, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(labelInfo, javax.swing.GroupLayout.DEFAULT_SIZE, 56, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -259,6 +278,10 @@ public class nuklidTransferTime extends javax.swing.JFrame {
         target = "T4";
     }//GEN-LAST:event_jCheckBoxT4ActionPerformed
 
+    private void jCheckBoxEmptyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxEmptyActionPerformed
+        target = "";
+    }//GEN-LAST:event_jCheckBoxEmptyActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -298,9 +321,11 @@ public class nuklidTransferTime extends javax.swing.JFrame {
     private javax.swing.ButtonGroup buttonGroupCheckBox;
     private javax.swing.ButtonGroup buttonGroupStartStop;
     private javax.swing.JFileChooser fileBrowser;
+    private javax.swing.JCheckBox jCheckBoxEmpty;
     private javax.swing.JCheckBox jCheckBoxT1;
     private javax.swing.JCheckBox jCheckBoxT2;
     private javax.swing.JCheckBox jCheckBoxT4;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel labelInfo;
     private javax.swing.JMenuBar menuBar;
