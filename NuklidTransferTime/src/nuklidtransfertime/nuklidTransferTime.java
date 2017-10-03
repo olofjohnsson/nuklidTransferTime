@@ -10,6 +10,7 @@ import java.awt.ComponentOrientation;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -17,12 +18,18 @@ import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.scene.control.Cell;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 
 
@@ -39,7 +46,8 @@ public class nuklidTransferTime extends javax.swing.JFrame {
     public String row;
     public String formattedTime;
     //public String path = "\\\\vgregion.se\\Hem\\SU-008\\olojo5\\Mina dokument\\temp.txt";//default path for file if no other is chosen
-    public String path = "G:\\\\SU.Omr4.MFT.Radiofarmakacentralen\\\\Utrustning\\\\PETtrace 880\\\\Ledningar\\\\Transfertid\\\\transferTime.txt";//default path for file if no other is chosen
+    //public String path = "G:\\\\SU.Omr4.MFT.Radiofarmakacentralen\\\\Utrustning\\\\PETtrace 880\\\\Ledningar\\\\Transfertid\\\\transferTime.txt";//default path for file if no other is chosen
+    public String path = "C:\\temp\\output.xlsx";
     /**
      * Creates new form nuklidTransferTime
      */
@@ -238,8 +246,16 @@ public class nuklidTransferTime extends javax.swing.JFrame {
             fileWriter = new FileWriter(path, true);
             Date date = new Date();
             row = (target+";"+date.toString()+";"+formattedTime+"\n");
-            fileWriter.write(target+";"+date.toString()+";"+formattedTime+"\n");
-            fileWriter.flush();
+            //fileWriter.write(target+";"+date.toString()+";"+formattedTime+"\n");
+            //fileWriter.flush();
+            Workbook workbook = new XSSFWorkbook("C:\\temp\\output.xlsx");
+            
+            //XSSFWorkbook workbook = new XSSFWorkbook(path);
+            Sheet sheet = workbook.createSheet("new sheet");
+            //Row sheetrow = sheet.createRow((short)0);
+            // Create a cell and put a value in it.
+            //org.apache.poi.ss.usermodel.Cell cell = sheetrow.createCell(0);
+            //cell.setCellValue(1);
             labelInfo.setText("<html>Transfer time is successfully stored in:<br><i>"+path+"</i></html>");
         } catch (FileNotFoundException e) {
             JOptionPane.showMessageDialog(null,"Please select a log file in the File menu", "File not found", JOptionPane.ERROR_MESSAGE);
