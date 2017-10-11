@@ -50,6 +50,7 @@ public class nuklidTransferTime extends javax.swing.JFrame {
     public String target = "";
     public String row;
     public String formattedTime;
+    private Boolean emptySheet = false;
     //public String path = "\\\\vgregion.se\\Hem\\SU-008\\olojo5\\Mina dokument\\temp.txt";//default path for file if no other is chosen
     //public String path = "G:\\\\SU.Omr4.MFT.Radiofarmakacentralen\\\\Utrustning\\\\PETtrace 880\\\\Ledningar\\\\Transfertid\\\\transferTime.txt";//default path for file if no other is chosen
     public String path = "C:\\temp\\output.xlsx";
@@ -261,12 +262,18 @@ public class nuklidTransferTime extends javax.swing.JFrame {
             };
  
             int rowCount = sheet.getLastRowNum();
+            if (rowCount == 0){
+                emptySheet = true;
+            }
+            else{
+                emptySheet = false;
+            }
             labelInfo.setText("RowCount is: "+rowCount);
             
             for (Object[] aBook : bookData) {
-                //if(rowCount>0)
-                    ++rowCount;
+                //if (empty)
                 Row row = sheet.createRow(rowCount);
+                ++rowCount;
                 
                 int columnCount = 0;
                  
