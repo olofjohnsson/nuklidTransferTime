@@ -9,7 +9,9 @@ import java.awt.BorderLayout;
 import java.awt.ComponentOrientation;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -17,12 +19,22 @@ import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.scene.control.Cell;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
+import org.apache.poi.EncryptedDocumentException;
+import static org.apache.poi.hssf.usermodel.HeaderFooter.date;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 
 
@@ -39,7 +51,8 @@ public class nuklidTransferTime extends javax.swing.JFrame {
     public String row;
     public String formattedTime;
     //public String path = "\\\\vgregion.se\\Hem\\SU-008\\olojo5\\Mina dokument\\temp.txt";//default path for file if no other is chosen
-    public String path = "G:\\\\SU.Omr4.MFT.Radiofarmakacentralen\\\\Utrustning\\\\PETtrace 880\\\\Ledningar\\\\Transfertid\\\\transferTime.txt";//default path for file if no other is chosen
+    //public String path = "G:\\\\SU.Omr4.MFT.Radiofarmakacentralen\\\\Utrustning\\\\PETtrace 880\\\\Ledningar\\\\Transfertid\\\\transferTime.txt";//default path for file if no other is chosen
+    public String path = "C:\\temp\\output.xlsx";
     /**
      * Creates new form nuklidTransferTime
      */
@@ -234,18 +247,54 @@ public class nuklidTransferTime extends javax.swing.JFrame {
         formattedTime = String.format("%.1f",elapsedTime);
         textPaneElapsedTime.setText(formattedTime+"s");
         FileWriter fileWriter;
+        
         try {
-            fileWriter = new FileWriter(path, true);
             Date date = new Date();
             row = (target+";"+date.toString()+";"+formattedTime+"\n");
-            fileWriter.write(target+";"+date.toString()+";"+formattedTime+"\n");
-            fileWriter.flush();
-            labelInfo.setText("<html>Transfer time is successfully stored in:<br><i>"+path+"</i></html>");
-        } catch (FileNotFoundException e) {
-            JOptionPane.showMessageDialog(null,"Please select a log file in the File menu", "File not found", JOptionPane.ERROR_MESSAGE);
-        } catch (IOException ex) {
-            Logger.getLogger(nuklidTransferTime.class.getName()).log(Level.SEVERE, null, ex);
+            FileInputStream inputStream = new FileInputStream(new File(path));
+            Workbook workbook = WorkbookFactory.create(inputStream);
+ 
+            Sheet sheet = workbook.getSheetAt(0);
+ 
+            Object[][] bookData = {
+                    {target, date.toString(), formattedTime}
+            };
+ 
+            int rowCount = sheet.getLastRowNum();
+            labelInfo.setText("RowCount is: "+rowCount);
+            
+            for (Object[] aBook : bookData) {
+                //if(rowCount>0)
+                    ++rowCount;
+                Row row = sheet.createRow(rowCount);
+                
+                int columnCount = 0;
+                 
+                org.apache.poi.ss.usermodel.Cell cell = row.createCell(columnCount);
+                //cell.setCellValue(rowCount);
+                 
+                for (Object field : aBook) {
+                    cell = row.createCell(columnCount);
+                    ++columnCount;
+                    if (field instanceof String) {
+                        cell.setCellValue((String) field);
+                    } else if (field instanceof Integer) {
+                        cell.setCellValue((Integer) field);
+                    }
+                }
+            }
+            inputStream.close();
+            FileOutputStream outputStream = new FileOutputStream(path);
+            workbook.write(outputStream);
+            workbook.close();
+            outputStream.close();
+             
+        } catch (IOException | EncryptedDocumentException
+                | InvalidFormatException ex) {
+            ex.printStackTrace();
         }
+        //labelInfo.setText("<html>Transfer time is successfully stored in:<br><i>"+path+"</i></html>");
+        
         }
         else
             textPaneElapsedTime.setText("");
