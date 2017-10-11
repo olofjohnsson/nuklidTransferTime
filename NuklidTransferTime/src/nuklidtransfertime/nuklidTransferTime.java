@@ -262,24 +262,13 @@ public class nuklidTransferTime extends javax.swing.JFrame {
             };
  
             int rowCount = sheet.getLastRowNum();
-            if (rowCount == 0){
-                emptySheet = true;
-            }
-            else{
-                emptySheet = false;
-            }
-            labelInfo.setText("RowCount is: "+rowCount);
+            
             
             for (Object[] aBook : bookData) {
-                //if (empty)
-                Row row = sheet.createRow(rowCount);
-                ++rowCount;
-                
-                int columnCount = 0;
-                 
+                Row row = sheet.createRow(++rowCount);               
+                int columnCount = 0;                
                 org.apache.poi.ss.usermodel.Cell cell = row.createCell(columnCount);
-                //cell.setCellValue(rowCount);
-                 
+                //cell.setCellValue(rowCount);                
                 for (Object field : aBook) {
                     cell = row.createCell(columnCount);
                     ++columnCount;
