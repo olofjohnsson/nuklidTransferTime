@@ -9,6 +9,7 @@ import java.awt.BorderLayout;
 import java.awt.ComponentOrientation;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
@@ -25,9 +26,13 @@ import javax.swing.JOptionPane;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
+import org.apache.poi.EncryptedDocumentException;
+import static org.apache.poi.hssf.usermodel.HeaderFooter.date;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
@@ -242,26 +247,54 @@ public class nuklidTransferTime extends javax.swing.JFrame {
         formattedTime = String.format("%.1f",elapsedTime);
         textPaneElapsedTime.setText(formattedTime+"s");
         FileWriter fileWriter;
+        
         try {
-            fileWriter = new FileWriter(path, true);
             Date date = new Date();
             row = (target+";"+date.toString()+";"+formattedTime+"\n");
-            //fileWriter.write(target+";"+date.toString()+";"+formattedTime+"\n");
-            //fileWriter.flush();
-            Workbook workbook = new XSSFWorkbook("C:\\temp\\output.xlsx");
+            FileInputStream inputStream = new FileInputStream(new File(path));
+            Workbook workbook = WorkbookFactory.create(inputStream);
+ 
+            Sheet sheet = workbook.getSheetAt(0);
+ 
+            Object[][] bookData = {
+                    {target, date.toString(), formattedTime}
+            };
+ 
+            int rowCount = sheet.getLastRowNum();
+            labelInfo.setText("RowCount is: "+rowCount);
             
-            //XSSFWorkbook workbook = new XSSFWorkbook(path);
-            Sheet sheet = workbook.createSheet("new sheet");
-            //Row sheetrow = sheet.createRow((short)0);
-            // Create a cell and put a value in it.
-            //org.apache.poi.ss.usermodel.Cell cell = sheetrow.createCell(0);
-            //cell.setCellValue(1);
-            labelInfo.setText("<html>Transfer time is successfully stored in:<br><i>"+path+"</i></html>");
-        } catch (FileNotFoundException e) {
-            JOptionPane.showMessageDialog(null,"Please select a log file in the File menu", "File not found", JOptionPane.ERROR_MESSAGE);
-        } catch (IOException ex) {
-            Logger.getLogger(nuklidTransferTime.class.getName()).log(Level.SEVERE, null, ex);
+            for (Object[] aBook : bookData) {
+                //if(rowCount>0)
+                    ++rowCount;
+                Row row = sheet.createRow(rowCount);
+                
+                int columnCount = 0;
+                 
+                org.apache.poi.ss.usermodel.Cell cell = row.createCell(columnCount);
+                //cell.setCellValue(rowCount);
+                 
+                for (Object field : aBook) {
+                    cell = row.createCell(columnCount);
+                    ++columnCount;
+                    if (field instanceof String) {
+                        cell.setCellValue((String) field);
+                    } else if (field instanceof Integer) {
+                        cell.setCellValue((Integer) field);
+                    }
+                }
+            }
+            inputStream.close();
+            FileOutputStream outputStream = new FileOutputStream(path);
+            workbook.write(outputStream);
+            workbook.close();
+            outputStream.close();
+             
+        } catch (IOException | EncryptedDocumentException
+                | InvalidFormatException ex) {
+            ex.printStackTrace();
         }
+        //labelInfo.setText("<html>Transfer time is successfully stored in:<br><i>"+path+"</i></html>");
+        
         }
         else
             textPaneElapsedTime.setText("");
