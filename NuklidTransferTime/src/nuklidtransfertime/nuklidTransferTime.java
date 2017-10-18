@@ -50,7 +50,6 @@ public class nuklidTransferTime extends javax.swing.JFrame {
     public String target = "";
     public String row;
     public String formattedTime;
-    private Boolean emptySheet = false;
     //public String path = "\\\\vgregion.se\\Hem\\SU-008\\olojo5\\Mina dokument\\temp.txt";//default path for file if no other is chosen
     //public String path = "G:\\\\SU.Omr4.MFT.Radiofarmakacentralen\\\\Utrustning\\\\PETtrace 880\\\\Ledningar\\\\Transfertid\\\\transferTime.txt";//default path for file if no other is chosen
     public String path = "C:\\temp\\output.xlsx";
@@ -109,6 +108,11 @@ public class nuklidTransferTime extends javax.swing.JFrame {
         stopButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 stopButtonMousePressed(evt);
+            }
+        });
+        stopButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                stopButtonActionPerformed(evt);
             }
         });
 
@@ -254,21 +258,36 @@ public class nuklidTransferTime extends javax.swing.JFrame {
             row = (target+";"+date.toString()+";"+formattedTime+"\n");
             FileInputStream inputStream = new FileInputStream(new File(path));
             Workbook workbook = WorkbookFactory.create(inputStream);
- 
             Sheet sheet = workbook.getSheetAt(0);
- 
             Object[][] bookData = {
                     {target, date.toString(), formattedTime}
             };
- 
+            
             int rowCount = sheet.getLastRowNum();
-            
-            
+            if (rowCount == 0){
+                Row row = sheet.createRow(0);
+                org.apache.poi.ss.usermodel.Cell cell = row.createCell(0);
+                cell = row.createCell(0);
+                cell.setCellValue("Target");
+                cell = row.createCell(1);
+                cell.setCellValue("Date/Time");
+                cell = row.createCell(2);
+                cell.setCellValue("Transfer time"); 
+            }    
+            sheet.setColumnWidth(0, 2048);
+            sheet.setColumnWidth(1, 7936);
+            sheet.setColumnWidth(2, 4864);
+          
             for (Object[] aBook : bookData) {
-                Row row = sheet.createRow(++rowCount);               
-                int columnCount = 0;                
+                //if(rowCount>0)
+                    ++rowCount;
+                Row row = sheet.createRow(rowCount);
+                
+                int columnCount = 0;
+                 
                 org.apache.poi.ss.usermodel.Cell cell = row.createCell(columnCount);
-                //cell.setCellValue(rowCount);                
+                //cell.setCellValue(rowCount);
+                 
                 for (Object field : aBook) {
                     cell = row.createCell(columnCount);
                     ++columnCount;
@@ -289,7 +308,7 @@ public class nuklidTransferTime extends javax.swing.JFrame {
                 | InvalidFormatException ex) {
             ex.printStackTrace();
         }
-        //labelInfo.setText("<html>Transfer time is successfully stored in:<br><i>"+path+"</i></html>");
+        labelInfo.setText("<html>Transfer time is successfully stored in:<br><i>"+path+"</i></html>");
         
         }
         else
@@ -326,6 +345,10 @@ public class nuklidTransferTime extends javax.swing.JFrame {
     private void jCheckBoxEmptyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxEmptyActionPerformed
         target = "";
     }//GEN-LAST:event_jCheckBoxEmptyActionPerformed
+
+    private void stopButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_stopButtonActionPerformed
 
     /**
      * @param args the command line arguments
