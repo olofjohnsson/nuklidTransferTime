@@ -47,7 +47,8 @@ public class nuklidTransferTime extends javax.swing.JFrame {
     private double elapsedTime;
     private Object textarea;
     public File file;
-    public String target = "";
+    public String target = "N/A";
+    public String destination = "N/A";
     public String row;
     public String formattedTime;
     //public String path = "\\\\vgregion.se\\Hem\\SU-008\\olojo5\\Mina dokument\\temp.txt";//default path for file if no other is chosen
@@ -73,6 +74,7 @@ public class nuklidTransferTime extends javax.swing.JFrame {
         buttonGroupStartStop = new javax.swing.ButtonGroup();
         fileBrowser = new javax.swing.JFileChooser();
         buttonGroupCheckBox = new javax.swing.ButtonGroup();
+        buttonGroupDestination = new javax.swing.ButtonGroup();
         startButton = new javax.swing.JToggleButton();
         stopButton = new javax.swing.JToggleButton();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -82,7 +84,17 @@ public class nuklidTransferTime extends javax.swing.JFrame {
         jCheckBoxT2 = new javax.swing.JCheckBox();
         jCheckBoxT4 = new javax.swing.JCheckBox();
         jCheckBoxEmpty = new javax.swing.JCheckBox();
-        jLabel1 = new javax.swing.JLabel();
+        targetLabel = new javax.swing.JLabel();
+        destinationLabel = new javax.swing.JLabel();
+        jCheckBoxMIP1 = new javax.swing.JCheckBox();
+        jCheckBoxMIP2 = new javax.swing.JCheckBox();
+        jCheckBoxMIP3 = new javax.swing.JCheckBox();
+        jCheckBoxTalia = new javax.swing.JCheckBox();
+        jCheckBoxBBS1 = new javax.swing.JCheckBox();
+        jCheckBoxBBS2 = new javax.swing.JCheckBox();
+        jCheckBoxManuela = new javax.swing.JCheckBox();
+        jCheckBoxDestNa = new javax.swing.JCheckBox();
+        jCheckBoxWaste = new javax.swing.JCheckBox();
         menuBar = new javax.swing.JMenuBar();
         menuBarFile = new javax.swing.JMenu();
         menuBarFileItemBrowsefile = new javax.swing.JMenuItem();
@@ -110,15 +122,11 @@ public class nuklidTransferTime extends javax.swing.JFrame {
                 stopButtonMousePressed(evt);
             }
         });
-        stopButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                stopButtonActionPerformed(evt);
-            }
-        });
 
         jScrollPane2.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         jScrollPane2.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 
+        textPaneElapsedTime.setBackground(new java.awt.Color(240, 240, 240));
         textPaneElapsedTime.setToolTipText("");
         textPaneElapsedTime.setCursor(new java.awt.Cursor(java.awt.Cursor.WAIT_CURSOR));
         jScrollPane2.setViewportView(textPaneElapsedTime);
@@ -155,7 +163,79 @@ public class nuklidTransferTime extends javax.swing.JFrame {
             }
         });
 
-        jLabel1.setText("Target:");
+        targetLabel.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        targetLabel.setText("Target:");
+
+        destinationLabel.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        destinationLabel.setText("Destination:");
+        destinationLabel.setToolTipText("");
+
+        buttonGroupDestination.add(jCheckBoxMIP1);
+        jCheckBoxMIP1.setText("MIP 1");
+        jCheckBoxMIP1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBoxMIP1ActionPerformed(evt);
+            }
+        });
+
+        buttonGroupDestination.add(jCheckBoxMIP2);
+        jCheckBoxMIP2.setText("MIP 2");
+        jCheckBoxMIP2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBoxMIP2ActionPerformed(evt);
+            }
+        });
+
+        buttonGroupDestination.add(jCheckBoxMIP3);
+        jCheckBoxMIP3.setText("MIP 3");
+        jCheckBoxMIP3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBoxMIP3ActionPerformed(evt);
+            }
+        });
+
+        buttonGroupDestination.add(jCheckBoxTalia);
+        jCheckBoxTalia.setText("TALIA");
+        jCheckBoxTalia.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBoxTaliaActionPerformed(evt);
+            }
+        });
+
+        buttonGroupDestination.add(jCheckBoxBBS1);
+        jCheckBoxBBS1.setText("BBS 1");
+        jCheckBoxBBS1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBoxBBS1ActionPerformed(evt);
+            }
+        });
+
+        buttonGroupDestination.add(jCheckBoxBBS2);
+        jCheckBoxBBS2.setText("BBS 2");
+        jCheckBoxBBS2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBoxBBS2ActionPerformed(evt);
+            }
+        });
+
+        buttonGroupDestination.add(jCheckBoxManuela);
+        jCheckBoxManuela.setText("MANUELA");
+        jCheckBoxManuela.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBoxManuelaActionPerformed(evt);
+            }
+        });
+
+        buttonGroupDestination.add(jCheckBoxDestNa);
+        jCheckBoxDestNa.setText("N/A");
+
+        buttonGroupDestination.add(jCheckBoxWaste);
+        jCheckBoxWaste.setText("Waste");
+        jCheckBoxWaste.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBoxWasteActionPerformed(evt);
+            }
+        });
 
         menuBarFile.setText("File");
 
@@ -183,29 +263,42 @@ public class nuklidTransferTime extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(labelInfo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(startButton, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(startButton, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(destinationLabel)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jCheckBoxMIP1)
+                                .addGap(18, 18, 18)
+                                .addComponent(jCheckBoxTalia))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jCheckBoxMIP3)
+                                    .addComponent(jCheckBoxMIP2)
+                                    .addComponent(jCheckBoxDestNa))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jCheckBoxManuela)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(jCheckBoxBBS2)
+                                        .addComponent(jCheckBoxBBS1))
+                                    .addComponent(jCheckBoxWaste))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
-                        .addComponent(stopButton, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jCheckBoxT1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jCheckBoxT2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jCheckBoxT4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jCheckBoxEmpty)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(targetLabel)
+                            .addComponent(jCheckBoxT1)
+                            .addComponent(jCheckBoxT2)
+                            .addComponent(jCheckBoxT4)
+                            .addComponent(jCheckBoxEmpty)
+                            .addComponent(stopButton, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(12, Short.MAX_VALUE))
+                    .addComponent(labelInfo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -219,16 +312,40 @@ public class nuklidTransferTime extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(29, 29, 29)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jCheckBoxT1)
-                    .addComponent(jCheckBoxT2)
-                    .addComponent(jCheckBoxT4)
-                    .addComponent(jCheckBoxEmpty))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(labelInfo, javax.swing.GroupLayout.DEFAULT_SIZE, 56, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(targetLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jCheckBoxT1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jCheckBoxT2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jCheckBoxT4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jCheckBoxEmpty))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(destinationLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jCheckBoxTalia)
+                            .addComponent(jCheckBoxMIP1))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jCheckBoxBBS1)
+                            .addComponent(jCheckBoxMIP2))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jCheckBoxBBS2)
+                            .addComponent(jCheckBoxMIP3))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jCheckBoxManuela)
+                            .addComponent(jCheckBoxDestNa))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jCheckBoxWaste)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(labelInfo, javax.swing.GroupLayout.DEFAULT_SIZE, 55, Short.MAX_VALUE))
         );
 
         pack();
@@ -260,7 +377,7 @@ public class nuklidTransferTime extends javax.swing.JFrame {
             Workbook workbook = WorkbookFactory.create(inputStream);
             Sheet sheet = workbook.getSheetAt(0);
             Object[][] bookData = {
-                    {target, date.toString(), formattedTime}
+                    {target, destination, date.toString(), formattedTime}
             };
             
             int rowCount = sheet.getLastRowNum();
@@ -270,13 +387,16 @@ public class nuklidTransferTime extends javax.swing.JFrame {
                 cell = row.createCell(0);
                 cell.setCellValue("Target");
                 cell = row.createCell(1);
-                cell.setCellValue("Date/Time");
+                cell.setCellValue("Destination");
                 cell = row.createCell(2);
-                cell.setCellValue("Transfer time"); 
+                cell.setCellValue("Date/Time");
+                cell = row.createCell(3);
+                cell.setCellValue("Transfer time (s)"); 
             }    
             sheet.setColumnWidth(0, 2048);
-            sheet.setColumnWidth(1, 7936);
-            sheet.setColumnWidth(2, 4864);
+            sheet.setColumnWidth(1, 3072);
+            sheet.setColumnWidth(2, 7936);
+            sheet.setColumnWidth(3, 4864);
           
             for (Object[] aBook : bookData) {
                 //if(rowCount>0)
@@ -350,6 +470,38 @@ public class nuklidTransferTime extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_stopButtonActionPerformed
 
+    private void jCheckBoxMIP1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxMIP1ActionPerformed
+        destination = "MIP 1";
+    }//GEN-LAST:event_jCheckBoxMIP1ActionPerformed
+
+    private void jCheckBoxMIP2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxMIP2ActionPerformed
+        destination = "MIP 2";
+    }//GEN-LAST:event_jCheckBoxMIP2ActionPerformed
+
+    private void jCheckBoxMIP3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxMIP3ActionPerformed
+        destination = "MIP 3";
+    }//GEN-LAST:event_jCheckBoxMIP3ActionPerformed
+
+    private void jCheckBoxTaliaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxTaliaActionPerformed
+        destination = "TALIA";
+    }//GEN-LAST:event_jCheckBoxTaliaActionPerformed
+
+    private void jCheckBoxBBS1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxBBS1ActionPerformed
+        destination = "BBS 1";
+    }//GEN-LAST:event_jCheckBoxBBS1ActionPerformed
+
+    private void jCheckBoxBBS2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxBBS2ActionPerformed
+        destination = "BBS 2";
+    }//GEN-LAST:event_jCheckBoxBBS2ActionPerformed
+
+    private void jCheckBoxManuelaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxManuelaActionPerformed
+        destination = "MANUELA";
+    }//GEN-LAST:event_jCheckBoxManuelaActionPerformed
+
+    private void jCheckBoxWasteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxWasteActionPerformed
+        destination = "Waste";
+    }//GEN-LAST:event_jCheckBoxWasteActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -387,13 +539,23 @@ public class nuklidTransferTime extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroupCheckBox;
+    private javax.swing.ButtonGroup buttonGroupDestination;
     private javax.swing.ButtonGroup buttonGroupStartStop;
+    private javax.swing.JLabel destinationLabel;
     private javax.swing.JFileChooser fileBrowser;
+    private javax.swing.JCheckBox jCheckBoxBBS1;
+    private javax.swing.JCheckBox jCheckBoxBBS2;
+    private javax.swing.JCheckBox jCheckBoxDestNa;
     private javax.swing.JCheckBox jCheckBoxEmpty;
+    private javax.swing.JCheckBox jCheckBoxMIP1;
+    private javax.swing.JCheckBox jCheckBoxMIP2;
+    private javax.swing.JCheckBox jCheckBoxMIP3;
+    private javax.swing.JCheckBox jCheckBoxManuela;
     private javax.swing.JCheckBox jCheckBoxT1;
     private javax.swing.JCheckBox jCheckBoxT2;
     private javax.swing.JCheckBox jCheckBoxT4;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JCheckBox jCheckBoxTalia;
+    private javax.swing.JCheckBox jCheckBoxWaste;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel labelInfo;
     private javax.swing.JMenuBar menuBar;
@@ -402,6 +564,7 @@ public class nuklidTransferTime extends javax.swing.JFrame {
     private javax.swing.JMenuItem menuBarFileItemBrowsefile;
     private javax.swing.JToggleButton startButton;
     private javax.swing.JToggleButton stopButton;
+    private javax.swing.JLabel targetLabel;
     private javax.swing.JTextPane textPaneElapsedTime;
     // End of variables declaration//GEN-END:variables
     DecimalFormat numberFormat = new DecimalFormat("#.00");
