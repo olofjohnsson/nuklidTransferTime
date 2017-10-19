@@ -126,9 +126,12 @@ public class nuklidTransferTime extends javax.swing.JFrame {
         jScrollPane2.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         jScrollPane2.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 
+        textPaneElapsedTime.setEditable(false);
         textPaneElapsedTime.setBackground(new java.awt.Color(240, 240, 240));
+        textPaneElapsedTime.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         textPaneElapsedTime.setToolTipText("");
         textPaneElapsedTime.setCursor(new java.awt.Cursor(java.awt.Cursor.WAIT_CURSOR));
+        textPaneElapsedTime.setFocusable(false);
         jScrollPane2.setViewportView(textPaneElapsedTime);
 
         buttonGroupCheckBox.add(jCheckBoxT1);
@@ -353,6 +356,10 @@ public class nuklidTransferTime extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void startButtonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_startButtonMousePressed
+        StyledDocument doc = textPaneElapsedTime.getStyledDocument();
+        SimpleAttributeSet center = new SimpleAttributeSet();
+        StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
+        doc.setParagraphAttributes(0, doc.getLength(), center, true);
         textPaneElapsedTime.setText("Counting");
         stopwatch.start();
         labelInfo.setText("");
@@ -361,10 +368,6 @@ public class nuklidTransferTime extends javax.swing.JFrame {
 
     private void stopButtonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_stopButtonMousePressed
         elapsedTime = stopwatch.elapsedTime();
-        StyledDocument doc = textPaneElapsedTime.getStyledDocument();
-        SimpleAttributeSet center = new SimpleAttributeSet();
-        StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
-        doc.setParagraphAttributes(0, doc.getLength(), center, false);
         if(elapsedTime>0){
         formattedTime = String.format("%.1f",elapsedTime);
         textPaneElapsedTime.setText(formattedTime+"s");
