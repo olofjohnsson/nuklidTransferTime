@@ -7,6 +7,9 @@ package nuklidtransfertime;
 
 import java.awt.BorderLayout;
 import java.awt.ComponentOrientation;
+import java.awt.Desktop;
+import java.awt.JobAttributes;
+import static java.awt.JobAttributes.DestinationType.FILE;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
@@ -52,8 +55,9 @@ public class nuklidTransferTime extends javax.swing.JFrame {
     public String row;
     public String formattedTime;
     //public String path = "\\\\vgregion.se\\Hem\\SU-008\\olojo5\\Mina dokument\\temp.txt";//default path for file if no other is chosen
-    //public String path = "G:\\\\SU.Omr4.MFT.Radiofarmakacentralen\\\\Utrustning\\\\PETtrace 880\\\\Ledningar\\\\Transfertid\\\\transferTime.txt";//default path for file if no other is chosen
-    public String path = "C:\\temp\\output.xlsx";
+    public String path = "G:\\\\SU.Omr4.MFT.Radiofarmakacentralen\\\\Utrustning\\\\PETtrace 880\\\\Ledningar\\\\Transfertid\\\\transferTime.xlsx";//default path for file if no other is chosen
+    //public String path = "C:\\temp\\output.xlsx";
+    //public String path = "";
     /**
      * Creates new form nuklidTransferTime
      */
@@ -98,6 +102,7 @@ public class nuklidTransferTime extends javax.swing.JFrame {
         menuBar = new javax.swing.JMenuBar();
         menuBarFile = new javax.swing.JMenu();
         menuBarFileItemBrowsefile = new javax.swing.JMenuItem();
+        menuBarFileOpenLogfile = new javax.swing.JMenuItem();
         menuBarFileAbout = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -249,6 +254,14 @@ public class nuklidTransferTime extends javax.swing.JFrame {
             }
         });
         menuBarFile.add(menuBarFileItemBrowsefile);
+
+        menuBarFileOpenLogfile.setText("Open log file");
+        menuBarFileOpenLogfile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuBarFileOpenLogfileActionPerformed(evt);
+            }
+        });
+        menuBarFile.add(menuBarFileOpenLogfile);
 
         menuBarFileAbout.setText("About");
         menuBarFileAbout.addActionListener(new java.awt.event.ActionListener() {
@@ -431,7 +444,12 @@ public class nuklidTransferTime extends javax.swing.JFrame {
                 | InvalidFormatException ex) {
             ex.printStackTrace();
         }
-        labelInfo.setText("<html>Transfer time is successfully stored in:<br><i>"+path+"</i></html>");
+        if (path == ""){
+            labelInfo.setText("<html>Please select a logfile<br>(If there is no excisting file create an empty *.xlxs file)</html>");
+        }
+        else{
+            labelInfo.setText("<html>Transfer time is successfully stored in selected file</html>");
+        }
         
         }
         else
@@ -505,6 +523,14 @@ public class nuklidTransferTime extends javax.swing.JFrame {
         destination = "Waste";
     }//GEN-LAST:event_jCheckBoxWasteActionPerformed
 
+    private void menuBarFileOpenLogfileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuBarFileOpenLogfileActionPerformed
+        try {
+            Desktop.getDesktop().open(new File(path));
+        } catch (IOException ex) {
+            Logger.getLogger(nuklidTransferTime.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_menuBarFileOpenLogfileActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -565,6 +591,7 @@ public class nuklidTransferTime extends javax.swing.JFrame {
     private javax.swing.JMenu menuBarFile;
     private javax.swing.JMenuItem menuBarFileAbout;
     private javax.swing.JMenuItem menuBarFileItemBrowsefile;
+    private javax.swing.JMenuItem menuBarFileOpenLogfile;
     private javax.swing.JToggleButton startButton;
     private javax.swing.JToggleButton stopButton;
     private javax.swing.JLabel targetLabel;
