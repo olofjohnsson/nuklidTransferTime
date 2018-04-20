@@ -516,7 +516,7 @@ public class nuklidTransferTime extends javax.swing.JFrame {
     }//GEN-LAST:event_stopButtonKeyPressed
 
     private void jCheckBoxDestNaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxDestNaActionPerformed
-        target = "N/A";
+        destination = "N/A";
         startButton.requestFocus();
     }//GEN-LAST:event_jCheckBoxDestNaActionPerformed
     private void setElapsedTime() {
