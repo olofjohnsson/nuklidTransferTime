@@ -61,6 +61,7 @@ public class nuklidTransferTime extends javax.swing.JFrame {
     public String row;
     public String formattedTime;
     public String path = "G:\\\\SU.Omr4.MFT.Radiofarmakacentralen\\\\Utrustning\\\\PETtrace 880\\\\Ledningar\\\\Transfertid\\\\transferTime.xlsx";//default path for file if no other is chosen
+    public String pathBackup = "C:\\temp\\backup.xlsx";//default path for backup logging
     //String path = "C:\\temp\\output.xlsx";
 
     /**
@@ -410,7 +411,12 @@ public class nuklidTransferTime extends javax.swing.JFrame {
         startButton.requestFocus();
         setElapsedTime();
         updateTextPaneElapsedTime();
-        writeToFile w = new writeToFile(path, elapsedTime, formattedTime, labelInfo2, textPaneElapsedTime, target, destination);
+        writeToFile w = null;
+        try {
+            w = new writeToFile(path, elapsedTime, formattedTime, labelInfo2, textPaneElapsedTime, target, destination);
+        } catch (IOException ex) {
+            Logger.getLogger(nuklidTransferTime.class.getName()).log(Level.SEVERE, null, ex);
+        }
         new Thread(w).start();
     }//GEN-LAST:event_stopButtonMousePressed
 
@@ -511,7 +517,12 @@ public class nuklidTransferTime extends javax.swing.JFrame {
         startButton.requestFocus();
         setElapsedTime();
         updateTextPaneElapsedTime();
-        writeToFile w = new writeToFile(path, elapsedTime, formattedTime, labelInfo2, textPaneElapsedTime, target, destination);
+        writeToFile w = null;
+        try {
+            w = new writeToFile(path, elapsedTime, formattedTime, labelInfo2, textPaneElapsedTime, target, destination);
+        } catch (IOException ex) {
+            Logger.getLogger(nuklidTransferTime.class.getName()).log(Level.SEVERE, null, ex);
+        }
         new Thread(w).start();
     }//GEN-LAST:event_stopButtonKeyPressed
 
@@ -629,8 +640,9 @@ class writeToFile implements Runnable {
     String target = "N/A";
     String path;
     String destination = "N/A";
+    String pathBackup = "C:\\Temp\\backup.xlsx";
 
-    writeToFile(String path, double elapsedTime, String formattedText, JLabel labelInfo2, JTextPane textPaneElapsedTime, String target, String destination) {
+    writeToFile(String path, double elapsedTime, String formattedText, JLabel labelInfo2, JTextPane textPaneElapsedTime, String target, String destination) throws IOException {
         this.path = path;
         this.elapsedTime = elapsedTime;
         this.formattedTime = formattedText;
@@ -645,73 +657,146 @@ class writeToFile implements Runnable {
         if (elapsedTime > 0) {
             System.out.println("Elapsed time is: " + formattedTime + "s");
             FileWriter fileWriter;
-            try {
-                Date date = new Date();
-                row = (target + ";" + date.toString() + ";" + formattedTime + "\n");
-                FileInputStream inputStream = new FileInputStream(new File(path));
-                Workbook workbook = WorkbookFactory.create(inputStream);
-                Sheet sheet = workbook.getSheetAt(0);
-                Object[][] bookData = {
-                    {target, destination, date.toString(), formattedTime}
-                };
-
-                int rowCount = sheet.getLastRowNum();
-                if (rowCount == 0) {
-                    Row row = sheet.createRow(0);
-                    org.apache.poi.ss.usermodel.Cell cell = row.createCell(0);
-                    cell = row.createCell(0);
-                    cell.setCellValue("Target");
-                    cell = row.createCell(1);
-                    cell.setCellValue("Destination");
-                    cell = row.createCell(2);
-                    cell.setCellValue("Date/Time");
-                    cell = row.createCell(3);
-                    cell.setCellValue("Transfer time (s)");
-                }
-                sheet.setColumnWidth(0, 2048);
-                sheet.setColumnWidth(1, 3072);
-                sheet.setColumnWidth(2, 7936);
-                sheet.setColumnWidth(3, 4864);
-
-                for (Object[] aBook : bookData) {
-                    //if(rowCount>0)
-                    ++rowCount;
-                    Row row = sheet.createRow(rowCount);
-
-                    int columnCount = 0;
-
-                    org.apache.poi.ss.usermodel.Cell cell = row.createCell(columnCount);
-                    //cell.setCellValue(rowCount);
-
-                    for (Object field : aBook) {
-                        cell = row.createCell(columnCount);
-                        ++columnCount;
-                        if (field instanceof String) {
-                            cell.setCellValue((String) field);
-                        } else if (field instanceof Integer) {
-                            cell.setCellValue((Integer) field);
-                        }
-                    }
-                }
-                inputStream.close();
-                FileOutputStream outputStream = new FileOutputStream(path);
-                workbook.write(outputStream);
-                workbook.close();
-                outputStream.close();
-
-            } catch (IOException | EncryptedDocumentException
-                    | InvalidFormatException ex) {
-                ex.printStackTrace();
-            }
-            if (path == "") {
-                labelInfo2.setText("<html>Please select a logfile<br>(If there is no excisting file create an empty *.xlxs file)</html>");
-            } else {
-                labelInfo2.setText("<html>Transfer time is successfully stored in selected file</html>");
-            }
-
+            writeData(path);
+            //writeDataBackup();
         } else {
             textPaneElapsedTime.setText("");
         }
     }
+    
+    public void writeData(String path) {
+        try {
+            Date date = new Date();
+            row = (target + ";" + date.toString() + ";" + formattedTime + "\n");
+            FileInputStream inputStream = new FileInputStream(new File(path));
+            Workbook workbook = WorkbookFactory.create(inputStream);
+            Sheet sheet = workbook.getSheetAt(0);
+            Object[][] bookData = {
+                {target, destination, date.toString(), formattedTime}
+            };
 
+            int rowCount = sheet.getLastRowNum();
+            if (rowCount == 0) {
+                Row row = sheet.createRow(0);
+                org.apache.poi.ss.usermodel.Cell cell = row.createCell(0);
+                cell = row.createCell(0);
+                cell.setCellValue("Target");
+                cell = row.createCell(1);
+                cell.setCellValue("Destination");
+                cell = row.createCell(2);
+                cell.setCellValue("Date/Time");
+                cell = row.createCell(3);
+                cell.setCellValue("Transfer time (s)");
+            }
+            sheet.setColumnWidth(0, 2048);
+            sheet.setColumnWidth(1, 3072);
+            sheet.setColumnWidth(2, 7936);
+            sheet.setColumnWidth(3, 4864);
+
+            for (Object[] aBook : bookData) {
+                //if(rowCount>0)
+                ++rowCount;
+                Row row = sheet.createRow(rowCount);
+
+                int columnCount = 0;
+
+                org.apache.poi.ss.usermodel.Cell cell = row.createCell(columnCount);
+                //cell.setCellValue(rowCount);
+
+                for (Object field : aBook) {
+                    cell = row.createCell(columnCount);
+                    ++columnCount;
+                    if (field instanceof String) {
+                        cell.setCellValue((String) field);
+                    } else if (field instanceof Integer) {
+                        cell.setCellValue((Integer) field);
+                    }
+                }
+            }
+            inputStream.close();
+            FileOutputStream outputStream = new FileOutputStream(path);
+            workbook.write(outputStream);
+            workbook.close();
+            outputStream.close();
+
+        } catch (IOException | EncryptedDocumentException
+                | InvalidFormatException ex ) {
+            ex.printStackTrace();
+            writeDataBackup();
+        }
+        if (path == "") {
+            labelInfo2.setText("<html>Please select a logfile<br>(If there is no excisting file create an empty *.xlxs file)</html>");
+        } else {
+            labelInfo2.setText("<html>Transfer time is successfully stored in selected file</html>");
+        }
+
+    }
+    
+        public void writeDataBackup() {
+        try {
+            Date date = new Date();
+            row = (target + ";" + date.toString() + ";" + formattedTime + "\n");
+            FileInputStream inputStream = new FileInputStream(new File(pathBackup));
+            Workbook workbook = WorkbookFactory.create(inputStream);
+            Sheet sheet = workbook.getSheetAt(0);
+            Object[][] bookData = {
+                {target, destination, date.toString(), formattedTime}
+            };
+
+            int rowCount = sheet.getLastRowNum();
+            if (rowCount == 0) {
+                Row row = sheet.createRow(0);
+                org.apache.poi.ss.usermodel.Cell cell = row.createCell(0);
+                cell = row.createCell(0);
+                cell.setCellValue("Target");
+                cell = row.createCell(1);
+                cell.setCellValue("Destination");
+                cell = row.createCell(2);
+                cell.setCellValue("Date/Time");
+                cell = row.createCell(3);
+                cell.setCellValue("Transfer time (s)");
+            }
+            sheet.setColumnWidth(0, 2048);
+            sheet.setColumnWidth(1, 3072);
+            sheet.setColumnWidth(2, 7936);
+            sheet.setColumnWidth(3, 4864);
+
+            for (Object[] aBook : bookData) {
+                //if(rowCount>0)
+                ++rowCount;
+                Row row = sheet.createRow(rowCount);
+
+                int columnCount = 0;
+
+                org.apache.poi.ss.usermodel.Cell cell = row.createCell(columnCount);
+                //cell.setCellValue(rowCount);
+
+                for (Object field : aBook) {
+                    cell = row.createCell(columnCount);
+                    ++columnCount;
+                    if (field instanceof String) {
+                        cell.setCellValue((String) field);
+                    } else if (field instanceof Integer) {
+                        cell.setCellValue((Integer) field);
+                    }
+                }
+            }
+            inputStream.close();
+            FileOutputStream outputStream = new FileOutputStream(path);
+            workbook.write(outputStream);
+            workbook.close();
+            outputStream.close();
+
+        } catch (IOException | EncryptedDocumentException
+                | InvalidFormatException ex) {
+            ex.printStackTrace();;
+        }
+        if (path == "") {
+            labelInfo2.setText("<html>Please select a logfile<br>(If there is no excisting file create an empty *.xlxs file)</html>");
+        } else {
+            labelInfo2.setText("<html>Transfer time is successfully stored in selected file</html>");
+        }
+
+    }
+    
 }

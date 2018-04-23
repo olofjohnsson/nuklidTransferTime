@@ -1,5 +1,5 @@
 /*
-Add: hotkey functionality and thread for file writing
+Add logging to backup file
 */
 package nuklidtransfertime;
 
@@ -14,7 +14,7 @@ import javax.swing.JFrame;
  * About dialog of the Anagram Game application.
  */
 public class About extends JDialog {
-    public String version = "v2.6";
+    public String version = "v2.8";
     /** Creates new form About */
     public About(JFrame parent) {
         super(parent,true);
