@@ -58,9 +58,11 @@ public class nuklidTransferTime extends javax.swing.JFrame {
     public File file;
     public String target = "N/A";
     public String destination = "N/A";
+    public String capillariBBS1 = "N/A";
     public String row;
     public String formattedTime;
-    public String path = "G:\\\\SU.Omr4.MFT.Radiofarmakacentralen\\\\Utrustning\\\\PETtrace 880\\\\Ledningar\\\\Transfertid\\\\transferTime.xlsx";//default path for file if no other is chosen
+    //public String path = "G:\\\\SU.Omr4.MFT.Radiofarmakacentralen\\\\Utrustning\\\\PETtrace 880\\\\Ledningar\\\\Transfertid\\\\transferTime.xlsx";//default path for file if no other is chosen
+    public String path = "C:\\Temp\\transferTimeTest.xlsx";//Testfile for debugging
     public String pathBackup = "C:\\temp\\backup.xlsx";//default path for backup logging
     //String path = "C:\\temp\\output.xlsx";
 
@@ -87,6 +89,7 @@ public class nuklidTransferTime extends javax.swing.JFrame {
         buttonGroupCheckBox = new javax.swing.ButtonGroup();
         buttonGroupDestination = new javax.swing.ButtonGroup();
         labelInfo = new javax.swing.JLabel();
+        buttonGroupCapillaries = new javax.swing.ButtonGroup();
         startButton = new javax.swing.JToggleButton();
         stopButton = new javax.swing.JToggleButton();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -107,6 +110,12 @@ public class nuklidTransferTime extends javax.swing.JFrame {
         jCheckBoxDestNa = new javax.swing.JCheckBox();
         jCheckBoxWaste = new javax.swing.JCheckBox();
         labelInfo2 = new javax.swing.JLabel();
+        targetLabel1 = new javax.swing.JLabel();
+        jCheckBoxBBS1Change = new javax.swing.JCheckBox();
+        jCheckBoxBBS2Change = new javax.swing.JCheckBox();
+        jCheckBoxCycloChange = new javax.swing.JCheckBox();
+        updateCapillaryChange = new javax.swing.JButton();
+        jCheckBoxCycloChange1 = new javax.swing.JCheckBox();
         menuBar = new javax.swing.JMenuBar();
         menuBarFile = new javax.swing.JMenu();
         menuBarFileItemBrowsefile = new javax.swing.JMenuItem();
@@ -132,12 +141,17 @@ public class nuklidTransferTime extends javax.swing.JFrame {
         });
 
         buttonGroupStartStop.add(stopButton);
-        stopButton.setText("Stop");
+        stopButton.setText("Stopp");
         stopButton.setMaximumSize(new java.awt.Dimension(57, 23));
         stopButton.setMinimumSize(new java.awt.Dimension(57, 23));
         stopButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 stopButtonMousePressed(evt);
+            }
+        });
+        stopButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                stopButtonActionPerformed(evt);
             }
         });
         stopButton.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -270,9 +284,56 @@ public class nuklidTransferTime extends javax.swing.JFrame {
 
         labelInfo2.setToolTipText("");
 
-        menuBarFile.setText("File");
+        targetLabel1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        targetLabel1.setText("Byte av framledningar:");
 
-        menuBarFileItemBrowsefile.setText("Select log file");
+        buttonGroupCapillaries.add(jCheckBoxBBS1Change);
+        jCheckBoxBBS1Change.setText("Targetswitch - BBS 1");
+        jCheckBoxBBS1Change.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBoxBBS1ChangeActionPerformed(evt);
+            }
+        });
+
+        buttonGroupCapillaries.add(jCheckBoxBBS2Change);
+        jCheckBoxBBS2Change.setText("Targetswitch - BBS 2");
+        jCheckBoxBBS2Change.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBoxBBS2ChangeActionPerformed(evt);
+            }
+        });
+
+        buttonGroupCapillaries.add(jCheckBoxCycloChange);
+        jCheckBoxCycloChange.setText("Cyklotron - Targetswitch");
+        jCheckBoxCycloChange.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBoxCycloChangeActionPerformed(evt);
+            }
+        });
+
+        updateCapillaryChange.setText("Uppdatera byte av framledning");
+        updateCapillaryChange.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                updateCapillaryChangeMousePressed(evt);
+            }
+        });
+        updateCapillaryChange.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                updateCapillaryChangeActionPerformed(evt);
+            }
+        });
+
+        buttonGroupCapillaries.add(jCheckBoxCycloChange1);
+        jCheckBoxCycloChange1.setText("N/A");
+        jCheckBoxCycloChange1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBoxCycloChange1ActionPerformed(evt);
+            }
+        });
+
+        menuBarFile.setText("Arkiv");
+
+        menuBarFileItemBrowsefile.setText("Välg logfil");
         menuBarFileItemBrowsefile.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 menuBarFileItemBrowsefileActionPerformed(evt);
@@ -280,7 +341,7 @@ public class nuklidTransferTime extends javax.swing.JFrame {
         });
         menuBarFile.add(menuBarFileItemBrowsefile);
 
-        menuBarFileOpenLogfile.setText("Open log file");
+        menuBarFileOpenLogfile.setText("Öppna logfil");
         menuBarFileOpenLogfile.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 menuBarFileOpenLogfileActionPerformed(evt);
@@ -288,7 +349,7 @@ public class nuklidTransferTime extends javax.swing.JFrame {
         });
         menuBarFile.add(menuBarFileOpenLogfile);
 
-        menuBarFileAbout.setText("About");
+        menuBarFileAbout.setText("Om");
         menuBarFileAbout.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 menuBarFileAboutActionPerformed(evt);
@@ -306,47 +367,62 @@ public class nuklidTransferTime extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jCheckBoxTargetNa)
                             .addComponent(jCheckBoxT2)
                             .addComponent(jCheckBoxT4)
-                            .addComponent(jCheckBoxT1)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(10, 10, 10)
-                                .addComponent(targetLabel)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(targetLabel1)
+                            .addComponent(targetLabel)
+                            .addComponent(jCheckBoxT1))
+                        .addGap(183, 183, 183)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jCheckBoxMIP1)
-                                .addGap(18, 18, 18)
-                                .addComponent(jCheckBoxTalia))
+                                .addComponent(destinationLabel)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jCheckBoxMIP3)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jCheckBoxBBS2))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jCheckBoxMIP2)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jCheckBoxBBS1))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jCheckBoxMIP1)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
+                                        .addComponent(jCheckBoxTalia)))
+                                .addGap(53, 53, 53))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jCheckBoxMIP3)
-                                    .addComponent(jCheckBoxMIP2)
-                                    .addComponent(jCheckBoxDestNa))
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jCheckBoxManuela)
-                                    .addComponent(jCheckBoxWaste)
-                                    .addComponent(jCheckBoxBBS1)
-                                    .addComponent(jCheckBoxBBS2)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(7, 7, 7)
-                                .addComponent(destinationLabel)))
-                        .addGap(33, 33, 33))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(startButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(jCheckBoxDestNa)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(65, 65, 65)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jCheckBoxWaste)
+                                            .addComponent(jCheckBoxManuela))))
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(startButton, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(37, 37, 37)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(14, 14, 14)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(stopButton, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(labelInfo2, javax.swing.GroupLayout.PREFERRED_SIZE, 440, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jCheckBoxCycloChange1)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(21, 21, 21)
+                                .addComponent(labelInfo2, javax.swing.GroupLayout.PREFERRED_SIZE, 440, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jCheckBoxCycloChange)
+                            .addComponent(jCheckBoxBBS2Change)
+                            .addComponent(jCheckBoxBBS1Change)
+                            .addComponent(updateCapillaryChange))
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -360,21 +436,24 @@ public class nuklidTransferTime extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(32, 32, 32)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(67, 67, 67)
+                .addGap(62, 62, 62)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(targetLabel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(targetLabel)
+                            .addComponent(destinationLabel))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jCheckBoxT1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jCheckBoxT2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jCheckBoxT4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jCheckBoxTargetNa))
-                    .addComponent(destinationLabel)
+                        .addComponent(jCheckBoxTargetNa)
+                        .addGap(18, 18, 18)
+                        .addComponent(targetLabel1))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(17, 17, 17)
+                        .addGap(22, 22, 22)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jCheckBoxTalia)
                             .addComponent(jCheckBoxMIP1))
@@ -392,8 +471,19 @@ public class nuklidTransferTime extends javax.swing.JFrame {
                             .addComponent(jCheckBoxDestNa))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jCheckBoxWaste)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
-                .addComponent(labelInfo2, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jCheckBoxBBS1Change)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jCheckBoxBBS2Change)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jCheckBoxCycloChange)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jCheckBoxCycloChange1)
+                .addGap(7, 7, 7)
+                .addComponent(updateCapillaryChange)
+                .addGap(18, 18, 18)
+                .addComponent(labelInfo2, javax.swing.GroupLayout.DEFAULT_SIZE, 129, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
@@ -530,6 +620,52 @@ public class nuklidTransferTime extends javax.swing.JFrame {
         destination = "N/A";
         startButton.requestFocus();
     }//GEN-LAST:event_jCheckBoxDestNaActionPerformed
+
+    private void jCheckBoxBBS1ChangeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxBBS1ChangeActionPerformed
+        destination = "BBS1-Targeswitch";
+        target = "N/A";
+        formattedTime = "Capillary replaced";
+        //elapsedTime = 0;
+        labelInfo2.setText("");
+    }//GEN-LAST:event_jCheckBoxBBS1ChangeActionPerformed
+
+    private void jCheckBoxBBS2ChangeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxBBS2ChangeActionPerformed
+        destination = "BBS2-Targeswitch";
+        target = "N/A";
+        formattedTime = "Capillary replaced";
+    }//GEN-LAST:event_jCheckBoxBBS2ChangeActionPerformed
+
+    private void jCheckBoxCycloChangeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxCycloChangeActionPerformed
+        destination = "Cyclotrone-Targeswitch";
+        target = "N/A";
+        formattedTime = "Capillary replaced";
+    }//GEN-LAST:event_jCheckBoxCycloChangeActionPerformed
+
+    private void updateCapillaryChangeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateCapillaryChangeActionPerformed
+        //
+    }//GEN-LAST:event_updateCapillaryChangeActionPerformed
+
+    private void updateCapillaryChangeMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_updateCapillaryChangeMousePressed
+        int dialogResult = JOptionPane.showConfirmDialog (null, "Har du bytt framledningsslang?");
+        if(dialogResult == JOptionPane.YES_OPTION){
+            elapsedTime = 1;
+            Thread.currentThread().interrupt();
+            writeToFile w = null;
+            try {
+                w = new writeToFile(path, elapsedTime, formattedTime, labelInfo2, textPaneElapsedTime, target, destination);
+            } catch (IOException ex) {
+                Logger.getLogger(nuklidTransferTime.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            new Thread(w).start();
+        }
+        
+    }//GEN-LAST:event_updateCapillaryChangeMousePressed
+
+    private void jCheckBoxCycloChange1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxCycloChange1ActionPerformed
+        destination = "N/A";
+        target = "N/A";
+        formattedTime = "N/A";
+    }//GEN-LAST:event_jCheckBoxCycloChange1ActionPerformed
     private void setElapsedTime() {
         elapsedTime = stopwatch.elapsedTime();
     }
@@ -545,7 +681,7 @@ public class nuklidTransferTime extends javax.swing.JFrame {
         SimpleAttributeSet center = new SimpleAttributeSet();
         StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
         doc.setParagraphAttributes(0, doc.getLength(), center, true);
-        textPaneElapsedTime.setText("Counting");
+        textPaneElapsedTime.setText("Räknar");
         stopwatch.start();
         labelInfo.setText("");
     }
@@ -594,13 +730,18 @@ public class nuklidTransferTime extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.ButtonGroup buttonGroupCapillaries;
     private javax.swing.ButtonGroup buttonGroupCheckBox;
     private javax.swing.ButtonGroup buttonGroupDestination;
     private javax.swing.ButtonGroup buttonGroupStartStop;
     private javax.swing.JLabel destinationLabel;
     private javax.swing.JFileChooser fileBrowser;
     private javax.swing.JCheckBox jCheckBoxBBS1;
+    private javax.swing.JCheckBox jCheckBoxBBS1Change;
     private javax.swing.JCheckBox jCheckBoxBBS2;
+    private javax.swing.JCheckBox jCheckBoxBBS2Change;
+    private javax.swing.JCheckBox jCheckBoxCycloChange;
+    private javax.swing.JCheckBox jCheckBoxCycloChange1;
     private javax.swing.JCheckBox jCheckBoxDestNa;
     private javax.swing.JCheckBox jCheckBoxMIP1;
     private javax.swing.JCheckBox jCheckBoxMIP2;
@@ -623,7 +764,9 @@ public class nuklidTransferTime extends javax.swing.JFrame {
     private javax.swing.JToggleButton startButton;
     private javax.swing.JToggleButton stopButton;
     private javax.swing.JLabel targetLabel;
+    private javax.swing.JLabel targetLabel1;
     private javax.swing.JTextPane textPaneElapsedTime;
+    private javax.swing.JButton updateCapillaryChange;
     // End of variables declaration//GEN-END:variables
     DecimalFormat numberFormat = new DecimalFormat("#.00");
 
@@ -725,9 +868,9 @@ class writeToFile implements Runnable {
             writeDataBackup();
         }
         if (path == "") {
-            labelInfo2.setText("<html>Please select a logfile<br>(If there is no excisting file create an empty *.xlxs file)</html>");
+            labelInfo2.setText("<html>Var god välj en logfil<br>(Om det saknas fil, skapa en med formatet *.xlxs)</html>");
         } else {
-            labelInfo2.setText("<html>Transfer time is successfully stored in selected file</html>");
+            labelInfo2.setText("<html>Framledningstid har sparats</html>");
         }
 
     }
@@ -792,9 +935,9 @@ class writeToFile implements Runnable {
             ex.printStackTrace();;
         }
         if (path == "") {
-            labelInfo2.setText("<html>Please select a logfile<br>(If there is no excisting file create an empty *.xlxs file)</html>");
+            labelInfo2.setText("<html>Var god välj logfil<br>(Om det saknas fil, skapa en på formatet *.xlxs)</html>");
         } else {
-            labelInfo2.setText("<html>Transfer time is successfully stored in selected file</html>");
+            labelInfo2.setText("<html>Framledningstid har sparats</html>");
         }
 
     }
