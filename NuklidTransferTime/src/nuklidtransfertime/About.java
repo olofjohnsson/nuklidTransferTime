@@ -52,7 +52,7 @@ public class About extends JDialog {
         copyrightTextArea.setEditable(false);
         copyrightTextArea.setLineWrap(true);
         copyrightTextArea.setRows(8);
-        copyrightTextArea.setText("Nuklid transfer time (2017)\n"+version+" \n\nDeveloper\nOlof Johnsson\nolof.johnsson@vgregion.se");
+        copyrightTextArea.setText("Mätning av framledningstid (2017)\n"+version+" \n\nUtvecklare\nOlof Johnsson\nolof.johnsson@vgregion.se");
         copyrightTextArea.setWrapStyleWord(true);
         copyrightTextArea.setBorder(null);
         copyrightTextArea.setFocusable(false);
@@ -65,7 +65,7 @@ public class About extends JDialog {
         mainPanel.add(copyrightTextArea, gridBagConstraints);
 
         closeButton.setMnemonic('C');
-        closeButton.setText("Close");
+        closeButton.setText("Stäng");
         closeButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 closeButtonActionPerformed(evt);
