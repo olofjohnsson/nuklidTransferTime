@@ -1,7 +1,7 @@
 /*
 Lägg till kommentarsfält i användargränssnitt
 */
-package nuklidtransfertime;
+package maft;
 
 import java.awt.Dimension;
 import java.awt.Point;
